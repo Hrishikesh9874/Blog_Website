@@ -77,25 +77,19 @@ app.post("/compose", function(req, res){
 
 
 app.get("/posts/:postId", function(req, res){
-    const requestedId=(req.params.elementId);
+    const requestedId=req.params.postId;
 
-    Post.findOne({_id: requestedId}, function(element){
+    Post.findOne({_id:requestedId})
+    .then(function(post){
         res.render("post.ejs", {
-            title: element.title,
-            content: element.content
+            title: post.title,
+            content: post.content
         })
     })
-    // posts.forEach(function(element){
-    //     if(storedTitle===requestedTitle){
-    //         res.render("post.ejs", {
-                
-    //             title: element.title,
-    //             content: element.content
-                
-    //         });
-    //     }
-    // })
-})
+    .catch(function(err){
+        console.log(err);
+    })
+});
 
 
 app.listen(port, function(){
